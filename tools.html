@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Environmental & Wastewater Engineering Portfolio">
+  <meta name="keywords" content="engineering, wastewater, environmental, GitHub Pages">
+  <meta name="author" content="xyrtula">
+  <meta property="og:title" content="Engineering Calculation Tools | xyrtula">
+  <meta property="og:description" content="Environmental & Wastewater Engineering Portfolio">
+  <meta property="og:url" content="https://xyrtula.github.io">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Engineering Calculation Tools | xyrtula</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">xyrtula</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="tools.html" class="active">Tools</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="section-label">Engineering Tools</div>
+      <h2>Engineering Calculation Tools</h2>
+
+      <div class="calc-tool" style="margin-top:32px">
+        <h3 style="font-family:var(--font-heading);font-size:20px;margin-bottom:6px;color:var(--text)">Wastewater Flow Rate Estimator</h3>
+        <p style="color:var(--text-muted);font-size:14px;margin-bottom:24px">Calculate estimated daily wastewater flow rates and treatment efficiency for municipal systems.</p>
+        <div id="calc-inputs">
+
+      <div>
+        <label for="inp_population_served">Population Served (persons)</label>
+        <input type="number" id="inp_population_served" value="50000" step="any" oninput="calcAll()">
+      </div>
+      <div>
+        <label for="inp_gallons_per_capita_day">Gallons Per Capita/Day (gpcd)</label>
+        <input type="number" id="inp_gallons_per_capita_day" value="100" step="any" oninput="calcAll()">
+      </div>
+      <div>
+        <label for="inp_treatment_efficiency">Treatment Efficiency (%)</label>
+        <input type="number" id="inp_treatment_efficiency" value="92" step="any" oninput="calcAll()">
+      </div>
+        </div>
+        <div class="calc-results">
+          <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">Results</div>
+
+        <div class="result-row">
+          <span class="result-label">Daily Flow (MGD)</span>
+          <span><span class="result-value" id="res_0">—</span></span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Treated Volume (MGD)</span>
+          <span><span class="result-value" id="res_1">—</span></span>
+        </div>
+        </div>
+      </div>
+
+      <div style="margin-top:48px">
+        <h3 style="font-family:var(--font-heading);font-size:20px;margin-bottom:16px">Available Tools</h3>
+        <ul class="styled"><li>Hydraulic retention time (HRT) calculator</li><li>BOD removal efficiency estimator</li><li>Sludge volume index (SVI) tool</li></ul>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  function calcAll() {
+    const population_served = parseFloat(document.getElementById('inp_population_served').value)||0;
+      const gallons_per_capita_day = parseFloat(document.getElementById('inp_gallons_per_capita_day').value)||0;
+      const treatment_efficiency = parseFloat(document.getElementById('inp_treatment_efficiency').value)||0;
+    try { document.getElementById('res_0').textContent = parseFloat(((population * gpcd) / 1000000).toFixed(4)); } catch(e) { document.getElementById('res_0').textContent = 'Err'; }
+      try { document.getElementById('res_1').textContent = parseFloat((((population * gpcd) / 1000000) * (efficiency/100)).toFixed(4)); } catch(e) { document.getElementById('res_1').textContent = 'Err'; }
+  }
+  window.addEventListener('DOMContentLoaded', calcAll);
+</script>
+<footer>
+  <div class="container">
+    <p>© 2026 xyrtula · <a href="https://xyrtula.github.io">GitHub Pages</a> · Built with No-Code Website Architect</p>
+  </div>
+</footer>
+</body>
+</html>
