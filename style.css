@@ -8,9 +8,9 @@
 :root {
   --primary: #2563eb;
   --secondary: #06b6d4;
-  --bg: #0a0c10;
-  --bg-surface: #1e2024;
-  --bg-card: #2d2f33;
+  --bg: #000000;
+  --bg-surface: #141414;
+  --bg-card: #232323;
   --text: #e2e8f0;
   --text-muted: #b1b4b8;
   --radius: 8px;
