@@ -1,128 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xyrtula | Digital Solutions & Engineering</title>
-    <style>
-        :root {
-            --primary: #38bdf8;
-            --secondary: #818cf8;
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            padding: 2rem;
-            text-align: center;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 2rem;
-        }
-
-        nav a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--primary);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .hero-card {
-            background: var(--card-bg);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            max-width: 600px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin: 0;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            margin: 1.5rem 0;
-        }
-
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: var(--bg);
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            margin-top: 1rem;
-            transition: transform 0.2s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        footer {
-            padding: 2rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Environmental & Wastewater Engineering Portfolio">
+  <meta name="keywords" content="engineering, wastewater, environmental, GitHub Pages">
+  <meta name="author" content="xyrtula">
+  <meta property="og:title" content="xyrtula — Engineering Portfolio | xyrtula">
+  <meta property="og:description" content="Environmental & Wastewater Engineering Portfolio">
+  <meta property="og:url" content="https://xyrtula.github.io">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>xyrtula — Engineering Portfolio | xyrtula</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">xyrtula</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
-    <header>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Projects</a>
-            <a href="#">Contact</a>
-        </nav>
-    </header>
+<main>
+  <section class="hero">
+    <div class="container hero-content">
+      <h1><span>xyrtula</span> — Engineering Portfolio</h1>
+      <p class="hero-subtitle">PhD Candidate · Environmental Engineering · Wastewater Systems</p>
+      <a href="projects.html" class="btn">View My Research →</a>
+      <img src="assets/images/hero.jpg" alt="Engineering laboratory workspace" class="hero-img" loading="lazy">
+    </div>
+  </section>
 
-    <main>
-        <div class="hero-card">
-            <h1>XYRTULA</h1>
-            <p class="tagline">Engineering the future of energy and sustainability through innovation and digital tools.</p>
-            <p style="color: #22c55e;">● Digital Lab Under Construction</p>
-            <a href="zmozgen@live.com" class="btn">Get In Touch</a>
-        </div>
-    </main>
-
-    <footer>
-        &copy; 2026 Xyrtula. Built with precision.
-    </footer>
-
+  <section>
+    <div class="container">
+      <div class="section-label">About</div>
+      <h2>About Me</h2>
+      <p style="color:var(--text-muted);max-width:700px;margin-bottom:24px">Hi</p>
+      <ul class="styled">
+        <li>PhD candidate in Environmental Engineering</li>
+        <li>Expert in biological wastewater treatment</li>
+        <li>MATLAB & Python modeling</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="container">
+    <p>© 2026 xyrtula · <a href="https://xyrtula.github.io">GitHub Pages</a> · Built with No-Code Website Architect</p>
+  </div>
+</footer>
 </body>
 </html>
