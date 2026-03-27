@@ -63,7 +63,7 @@
           <span class="result-value" id="res_1">—</span>
         </div>
         <div class="result-row">
-          <span class="result-label"></span>
+          <span class="result-label">Monthly Flow</span>
           <span class="result-value" id="res_2">—</span>
         </div>
         </div>
@@ -83,7 +83,7 @@
       const treatment_efficiency = parseFloat(document.getElementById('inp_treatment_efficiency').value)||0;
     try { document.getElementById('res_0').textContent = parseFloat(((population_served * gallons_per_capita_day) / 1000000).toFixed(4)); } catch(e) { document.getElementById('res_0').textContent = 'Err'; }
       try { document.getElementById('res_1').textContent = parseFloat((((population_served * gallons_per_capita_day) / 1000000) * (treatment_efficiency/100)).toFixed(4)); } catch(e) { document.getElementById('res_1').textContent = 'Err'; }
-      try { document.getElementById('res_2').textContent = parseFloat(().toFixed(4)); } catch(e) { document.getElementById('res_2').textContent = 'Err'; }
+      try { document.getElementById('res_2').textContent = parseFloat(((population_served * gallons_per_capita_day * 30) / 1000000).toFixed(4)); } catch(e) { document.getElementById('res_2').textContent = 'Err'; }
   }
   window.addEventListener('DOMContentLoaded', calcAll);
 </script>
