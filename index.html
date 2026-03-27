@@ -461,7 +461,7 @@ document.getElementById('nav-toggle').addEventListener('click', () => {
 });
 
 // Browser back/forward
-window.addEventListener('popstate', router);
+window.addEventListener('hashchange', router);
 
 // Calculator
 function calcAll() {
