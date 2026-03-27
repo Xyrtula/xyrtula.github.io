@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Energy, Environment and Sustainability Solutions">
-  <meta name="keywords" content="Engineering, Energy, Environment, Sustainability">
+  <meta name="description" content="Engineering Solutions">
+  <meta name="keywords" content="Engineering, Energy, Environmental, Sustainability">
   <meta name="author" content="Xyrtula">
-  <meta property="og:title" content="Xyrtula | Xyrtula">
-  <meta property="og:description" content="Energy, Environment and Sustainability Solutions">
+  <meta property="og:title" content="Home|Xyrtula">
+  <meta property="og:description" content="Engineering Solutions">
   <meta property="og:url" content="https://xyrtula.github.io">
+  <meta property="og:type" content="website">
+  
   <meta name="twitter:card" content="summary_large_image">
-  <title>Xyrtula | Xyrtula</title>
+  
+  <title>Home|Xyrtula</title>
+  <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Xyrtula</a>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="tools.html">Tools</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
+    <a href="index.html" class="nav-logo">xyrtula</a>
+    <ul class="nav-links"><li><a href="index.html" class="active">Home</a></li><li><a href="projects.html">Projects</a></li><li><a href="tools.html">Tools</a></li><li><a href="contact.html">Contact</a></li></ul>
+    <button class="nav-hamburger" onclick="this.nextSibling&&this.nextSibling.classList&&this.nextSibling.classList.toggle('open')" aria-label="Menu">☰</button>
   </div>
 </nav>
 
@@ -31,8 +31,11 @@
     <div class="container hero-content">
       <h1><span>Xyrtula</span></h1>
       <p class="hero-subtitle">Engineer</p>
-      <a href="projects.html" class="btn">View My Projects →</a>
-      <img src="assets/images/New PP.jpg" alt="Energy, Environment and Sustainability Solutions" class="hero-img" loading="lazy">
+      <div class="hero-cta-group">
+        <a href="projects.html" class="btn">View My Projects →</a>
+        <a href="contact.html" class="btn btn-outline">Contact Me</a>
+      </div>
+      <img src="assets/images/hero.jpg" alt="Welcome to my website." class="hero-img" loading="lazy">
     </div>
   </section>
 
@@ -40,18 +43,25 @@
     <div class="container">
       <div class="section-label">About</div>
       <h2>About Me</h2>
-      <p style="color:var(--text-muted);max-width:700px;margin-bottom:24px">I’m an engineer who believes industrial progress should not come at the cost of the planet. My work focuses on understanding how systems operate in practice and how they can be redesigned to work more efficiently, cleaner, and sustainably. I specialize in turning technical bottlenecks into operational advantages.</p>
-      <ul class="styled">
-        <li>Environmental Engineering</li>
-        <li>Energy Resources and Management</li>
-        <li>Sustainability Solutions</li>
-      </ul>
+      <p style="color:var(--text-muted);max-width:700px">I’m an engineer who believes industrial progress should not come at the cost of the planet. My work focuses on understanding how systems operate in practice and how they can be redesigned to work more efficiently, cleaner, and sustainably. I specialize in turning technical bottlenecks into operational advantages.</p>
+      
+      <div style="margin-top:24px"><ul class="styled"><li>Environmental Engineering</li><li>Energy Resources and Management</li><li>Sustainability Solutions</li></ul></div>
+    </div>
+  </section>
+  
+  <section>
+    <div class="container">
+      <div class="section-label">Core Expertise</div>
+      <div class="skills-group"><span class="skill-tag">Wastewater Treatment</span><span class="skill-tag">Energy Systems</span><span class="skill-tag">Problem Solving</span></div>
     </div>
   </section>
 </main>
 <footer>
-  <div class="container">
-    <p>© 2026 Xyrtula · <a href="https://xyrtula.github.io">GitHub Pages</a> · Built with No-Code Website Architect</p>
+  <div class="footer-inner">
+    
+    <div class="footer-copy">© 2026 Xyrtula · All rights reserved.</div>
+    
+    
   </div>
 </footer>
 </body>
