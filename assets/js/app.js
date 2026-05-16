@@ -76,7 +76,7 @@
           "Built a research foundation in environmental engineering.",
           "Connected pollution analysis with sustainability awareness."
         ],
-        link: ""
+        link: "assets/BscThesis.pdf"
       }
     ];
 
@@ -174,16 +174,11 @@
     ];
 
     // PROJECT TOGGLE + PREVIEW
-    const projectSets = {
-      work: WORK_PROJECTS,
-      personal: PERSONAL_PROJECTS
-    };
+    const ALL_PROJECTS = [...WORK_PROJECTS, ...PERSONAL_PROJECTS];
     const projectsWall = document.getElementById('projectsWall');
     const projectsStage = document.querySelector('.projects-stage');
-    const projectsSwitch = document.getElementById('projectsSwitch');
     const projectPreview = document.getElementById('projectPreview');
     const projectPreviewClose = document.getElementById('projectPreviewClose');
-    let activeProjectKind = 'work';
     let activeProjectIndex = -1;
     let panelOpen = false;
     let journeyModalOpen = false;
@@ -218,12 +213,11 @@
     }
 
     function updateProjectPreview(project) {
-      const kind = project.kind || activeProjectKind;
       const link = document.getElementById('projectPreviewLink');
       const subtitle = document.getElementById('projectPreviewAcronym');
       const roleLabel = document.getElementById('projectPreviewRoleLabel');
       const featuresList = document.getElementById('projectPreviewFeatures');
-      projectPreview.className = `project-preview open is-${kind}`;
+      projectPreview.className = 'project-preview open';
       projectsStage.classList.add('is-preview-open');
       document.getElementById('projectPreviewLogo').innerHTML = project.logo
         ? `<img src="${project.logo}" alt="${project.title} logo" loading="lazy">`
@@ -255,7 +249,7 @@
     }
 
     function closeProjectPreview() {
-      projectPreview.classList.remove('open', 'is-work', 'is-personal');
+      projectPreview.classList.remove('open');
       projectsStage.classList.remove('is-preview-open');
       projectsWall.querySelectorAll('.project-logo-button').forEach(node => node.classList.remove('is-active'));
       activeProjectIndex = -1;
@@ -263,19 +257,15 @@
       unlockPageScrollIfClear();
     }
 
-    function renderProjects(kind = activeProjectKind) {
-      activeProjectKind = kind;
-      const items = projectSets[kind];
+    function renderProjects() {
+      const items = ALL_PROJECTS;
       closeProjectPreview();
       projectsWall.innerHTML = '';
-      projectsWall.dataset.kind = kind;
-      projectsSwitch.classList.toggle('is-personal', kind === 'personal');
-      projectsSwitch.setAttribute('aria-pressed', String(kind === 'personal'));
 
       items.forEach((project, idx) => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = `project-logo-button ${kind === 'personal' ? 'is-personal' : ''}`;
+        button.className = 'project-logo-button';
         button.setAttribute('aria-label', `Preview ${project.title}`);
         button.innerHTML = renderProjectLogo(project);
         const openCard = () => {
@@ -299,14 +289,10 @@
       });
     }
 
-    projectsSwitch.addEventListener('click', () => {
-      renderProjects(activeProjectKind === 'work' ? 'personal' : 'work');
-    });
     projectPreviewClose.addEventListener('click', closeProjectPreview);
     projectsStage.addEventListener('click', e => {
       if (!projectPreview.classList.contains('open')) return;
       if (e.target.closest('.project-logo-button')) return;
-      if (e.target.closest('.projects-switch')) return;
       if (projectPreview.contains(e.target)) return;
       closeProjectPreview();
     });
@@ -648,7 +634,7 @@
     const cursor = document.getElementById('cursorDot');
     let mouseX = 0, mouseY = 0;
     document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px'; });
-    const hoverTargets = 'a, button, .project-logo-button, .projects-switch, .btn, input, textarea, .journey-card, .program-card, .skill-cluster, .journey-modal-close';
+    const hoverTargets = 'a, button, .project-logo-button, .btn, input, textarea, .journey-card, .program-card, .skill-cluster, .journey-modal-close';
     document.addEventListener('mouseover', e => { if (e.target.closest(hoverTargets)) cursor.classList.add('hovering'); });
     document.addEventListener('mouseout', e => { if (e.target.closest(hoverTargets)) cursor.classList.remove('hovering'); });
 
