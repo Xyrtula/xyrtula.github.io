@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziya Mert Ozgen | Engineer</title>
+    <meta name="description" content="Portfolio of Ziya Mert Ozgen - Engineer focused on energy, sustainability, wastewater treatment, and process optimization.">
+    <link rel="icon" href="assets/favicon.ico" sizes="any">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="noise-overlay"></div>
+
+    <nav class="navbar" id="navbar" aria-label="Main navigation">
+        <div class="nav-logo">Xyrtula</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#hero" data-section="0" class="active">Home</a></li>
+            <li><a href="#about" data-section="1">About</a></li>
+            <li><a href="#skills" data-section="2">Skills</a></li>
+            <li><a href="#projects" data-section="3">Projects</a></li>
+            <li><a href="#contact" data-section="4">Contact</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+    </nav>
+
+    <div class="dot-nav" id="dotNav">
+        <button class="dot-nav-item active" data-section="0" aria-label="Go to Hero" aria-current="page"><span class="dot-nav-tooltip">Home</span></button>
+        <button class="dot-nav-item" data-section="1" aria-label="Go to About"><span class="dot-nav-tooltip">About</span></button>
+        <button class="dot-nav-item" data-section="2" aria-label="Go to Skills"><span class="dot-nav-tooltip">Skills</span></button>
+        <button class="dot-nav-item" data-section="3" aria-label="Go to Projects"><span class="dot-nav-tooltip">Projects</span></button>
+        <button class="dot-nav-item" data-section="4" aria-label="Go to Contact"><span class="dot-nav-tooltip">Contact</span></button>
+    </div>
+
+    <section class="fp-section" id="hero" data-index="0">
+        <canvas id="particleCanvas"></canvas>
+        <div class="hero-content">
+            <div class="hero-left">
+                <p class="hero-greeting">Hello there, I'm</p>
+                <h1 class="hero-name">Ziya Mert<br><span>Ozgen</span></h1>
+                <p class="hero-subtitle"><span id="typewriter"></span><span class="typewriter-cursor"></span></p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary" id="heroProjectsButton" data-section-target="3">View My Work</a>
+                    <a href="#contact" class="btn btn-outline" id="heroContactButton" data-section-target="4" data-focus-target="#contact-name">Contact Me</a>
+                </div>
+            </div>
+            <div class="hero-right" id="heroPhoto">
+                <img src="assets/pp1.jpg" alt="Ziya Mert Ozgen" class="hero-img-front">
+                <img src="assets/pp1.jpg" alt="Ziya Mert Ozgen" class="hero-img-back">
+            </div>
+        </div>
+        <div class="scroll-indicator" aria-hidden="true"><span class="material-symbols-outlined">expand_more</span></div>
+    </section>
+
+    <section class="fp-section" id="about" data-index="1">
+        <span class="section-watermark" aria-hidden="true">02</span>
+        <div class="section-inner">
+            <h2 class="section-heading reveal-item">About</h2>
+            <div class="heading-rule reveal-item"></div>
+            <div class="about-stage">
+                <div class="about-portrait-wrap reveal-item">
+                    <div class="about-photo">
+                        <img src="assets/pp2.jpg" alt="Ziya Mert Ozgen">
+                    </div>
+                </div>
+                <div class="about-copy reveal-item">
+                    <p class="about-quote">Engineer focused on energy and sustainability</p>
+                    <div class="about-text">
+                        <p>I am an engineer with hands-on experience in textile digital printing maintenance, technical team leadership, wastewater treatment research, and process optimization.</p>
+                        <p>I am pursuing an M.Sc. in Energy Resources and Management at Eskisehir Technical University, with a thesis on electrochemical textile wastewater treatment and green hydrogen production.</p>
+                        <p>My work combines experimental research, data analysis, technical problem solving, and sustainability-oriented engineering.</p>
+                    </div>
+                </div>
+                <div class="about-journey reveal-item">
+                    <h3 class="journey-heading"><span class="education-word">Education</span> &amp; <span class="experience-word">Experience</span></h3>
+                    <div class="journey-tree" id="journeyTree"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="fp-section" id="skills" data-index="2">
+        <span class="section-watermark" aria-hidden="true">03</span>
+        <div class="section-inner">
+            <h2 class="section-heading reveal-item">Skills</h2>
+            <div class="heading-rule reveal-item"></div>
+            <div class="skills-stage">
+                <div class="programs-shell reveal-item">
+                    <div class="programs-grid" id="programsGrid"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="fp-section" id="projects" data-index="3">
+        <span class="section-watermark" aria-hidden="true">04</span>
+        <div class="section-inner">
+            <h2 class="section-heading reveal-item">Projects</h2>
+            <div class="heading-rule reveal-item"></div>
+            <div class="projects-toggle reveal-item" id="projectsToggle">
+                <button type="button" class="projects-switch" id="projectsSwitch" aria-label="Toggle project category" aria-pressed="false">
+                    <span class="projects-switch-thumb" aria-hidden="true"></span>
+                    <span class="projects-switch-label projects-switch-label-work">Work</span>
+                    <span class="projects-switch-label projects-switch-label-personal">Thesis</span>
+                </button>
+            </div>
+            <div class="projects-stage reveal-item">
+                <div class="projects-wall" id="projectsWall"></div>
+                <article class="project-preview" id="projectPreview" aria-live="polite">
+                    <button type="button" class="project-preview-close" id="projectPreviewClose" aria-label="Close project preview">&times;</button>
+                    <div class="project-preview-logo" id="projectPreviewLogo"></div>
+                    <div class="project-preview-body">
+                        <h3 class="project-preview-title" id="projectPreviewTitle"></h3>
+                        <p class="project-preview-acronym" id="projectPreviewAcronym"></p>
+                        <p class="project-preview-summary" id="projectPreviewSummary"></p>
+                        <p class="project-preview-role-label" id="projectPreviewRoleLabel">My role in this project:</p>
+                        <ul class="project-preview-features" id="projectPreviewFeatures"></ul>
+                        <a class="project-preview-link" id="projectPreviewLink" href="#" target="_blank" rel="noopener noreferrer">Project Page</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="fp-section" id="contact" data-index="4">
+        <span class="section-watermark" aria-hidden="true">06</span>
+        <div class="section-inner">
+            <div class="contact-content">
+                <div class="contact-panel reveal-item">
+                    <div class="contact-visual">
+                        <div class="contact-visual-frame">
+                            <img src="assets/pp3.jpg" alt="Ziya Mert Ozgen">
+                        </div>
+                    </div>
+                    <div class="contact-body">
+                        <h2 class="contact-heading">Contact</h2>
+                        <p class="contact-copy">If you want to talk about engineering roles, sustainability projects, research, or technical collaboration, send a message here.</p>
+                        <div class="contact-meta">
+                            <div class="social-icons">
+                                <a href="https://xyrtula.iblogger.org/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Blog"><svg viewBox="0 0 24 24"><path d="M4 3h16a1 1 0 011 1v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1zm2 4v10h12V7H6zm2 2h8v2H8V9zm0 4h5v2H8v-2z"/></svg></a>
+                                <a href="https://linkedin.com/in/zmozgen/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                                <a href="mailto:zmozgen@live.com" class="social-icon" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M1.5 4.5h21v15h-21v-15zm10.5 7.125L3.75 6.75v10.5h16.5V6.75L12 11.625zm7.76-5.625H4.24L12 10.64 19.76 6z"/></svg></a>
+                            </div>
+                        </div>
+                        <form class="contact-form" id="contactForm" action="https://formsubmit.co/zmozgen@live.com" method="POST">
+                            <input type="hidden" name="_subject" id="contactSubject" value="New message from your portfolio!">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_replyto" id="contactReplyTo" value="">
+                            <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">
+                            <div class="form-row">
+                                <div class="form-group"><label for="contact-name">Name</label><input type="text" id="contact-name" name="name" placeholder="Name" required></div>
+                                <div class="form-group"><label for="contact-email">Email</label><input type="email" id="contact-email" name="email" placeholder="Email" required></div>
+                            </div>
+                            <div class="form-group"><label for="contact-message">Message</label><textarea id="contact-message" name="message" placeholder="Message" required></textarea></div>
+                            <button type="submit" class="form-submit">Send Message</button>
+                            <p class="form-status" id="contactFormStatus" role="status" aria-live="polite"></p>
+                        </form>
+                        <footer class="footer"><p>Xyrtula &#169; 2026, All Rights Reserved.</p></footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="journey-modal-overlay" id="journeyModalOverlay" aria-hidden="true">
+        <div class="journey-modal" role="dialog" aria-modal="true" aria-labelledby="journeyModalTitle">
+            <button class="journey-modal-close" id="journeyModalClose" aria-label="Close details">&times;</button>
+            <div class="journey-modal-top">
+                <div>
+                    <h3 class="journey-modal-title" id="journeyModalTitle"></h3>
+                    <p class="journey-modal-org" id="journeyModalOrg"></p>
+                </div>
+                <div class="journey-modal-date" id="journeyModalDate"></div>
+            </div>
+            <div class="journey-modal-grid">
+                <div class="journey-modal-panel">
+                    <h4>Overview</h4>
+                    <p id="journeyModalSummary"></p>
+                </div>
+                <div class="journey-modal-panel">
+                    <h4>Highlights</h4>
+                    <ul id="journeyModalHighlights"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/app.js" defer></script>
+</body>
+</html>
