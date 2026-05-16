@@ -179,6 +179,7 @@
     const projectsStage = document.querySelector('.projects-stage');
     const projectPreview = document.getElementById('projectPreview');
     const projectPreviewClose = document.getElementById('projectPreviewClose');
+    document.body.appendChild(projectPreview);
     let activeProjectIndex = -1;
     let panelOpen = false;
     let journeyModalOpen = false;
@@ -291,6 +292,12 @@
 
     projectPreviewClose.addEventListener('click', closeProjectPreview);
     projectsStage.addEventListener('click', e => {
+      if (!projectPreview.classList.contains('open')) return;
+      if (e.target.closest('.project-logo-button')) return;
+      if (projectPreview.contains(e.target)) return;
+      closeProjectPreview();
+    });
+    document.addEventListener('click', e => {
       if (!projectPreview.classList.contains('open')) return;
       if (e.target.closest('.project-logo-button')) return;
       if (projectPreview.contains(e.target)) return;
