@@ -72,7 +72,7 @@
         role: "Researcher",
         summary: "As part of my academic research, I author scientific articles and technical reports.",
         features: [
-          "Z. M. Ozgen, U. Tezcan Un, and O. Onay, 'Electrochemical Wastewater Treatment and Hydrogen Production', in New Concepts and Advanced Studies in Engineering, O. Umut, Bidge, 2025, 12, 335-357",
+          "Ozgen, Z. M., Tezcan Un, U., & Onay, O. (2025). Electrochemical wastewater treatment and hydrogen production. In O. Umut (Ed.), New concepts and advanced studies in engineering (pp. 335–357). Allscience Academy.",
           "Coming Soon",
           "Coming Soon"
         ],
@@ -103,7 +103,7 @@
         summary: "Pursuing a master's degree in Energy Resources and Management with a 3.85 GPA.",
         highlights: [
           "Thesis focuses on electrochemical treatment of textile wastewater and renewable hydrogen production.",
-          "Available to begin working immediately before completing the master's degree.",
+          "Acquired specialized expertise in advanced energy auditing and sustainability reporting methodologies.",
           "Combines energy systems, sustainability, and environmental engineering research."
         ]
       },
