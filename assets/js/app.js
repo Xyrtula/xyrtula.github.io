@@ -162,15 +162,18 @@
     ];
 
     const PROGRAMS = [
+      { name: "Energy Manager", subtitle: "Energy resources and sustainability focus", icon: "energy_savings_leaf", color: "#20d5d8" },
+      { name: "Environmental Engineering", subtitle: "Pollution and sustainability systems", icon: "eco", color: "#9be15d" },
+      { name: "Process Optimization", subtitle: "Efficiency and energy recovery", icon: "tune", color: "#20d5d8" },
       { name: "Experimental Research", subtitle: "Laboratory work and test planning", icon: "science", color: "#40d9ff" },
       { name: "Data Analysis", subtitle: "Interpreting process and treatment data", icon: "monitoring", color: "#7c7cff" },
-      { name: "Process Optimization", subtitle: "Efficiency and energy recovery", icon: "tune", color: "#20d5d8" },
-      { name: "Adaptability", subtitle: "Fast learning in changing environments", icon: "sync_alt", color: "#6df0a5" },
-      { name: "Environmental Engineering", subtitle: "Pollution and sustainability systems", icon: "eco", color: "#9be15d" },
       { name: "Technical Management", subtitle: "Team and customer coordination", icon: "engineering", color: "#ffcc66" },
       { name: "Critical Thinking", subtitle: "Clear judgment under complex conditions", icon: "psychology", color: "#ff8bd1" },
+      { name: "Result-Oriented Thinking", subtitle: "Focused execution with measurable outcomes", icon: "track_changes", color: "#f5d76e" },
+      { name: "Teamwork and Leadership", subtitle: "Collaborative execution and ownership", icon: "groups", color: "#b892ff" },
+      { name: "Adaptability", subtitle: "Fast learning in changing environments", icon: "sync_alt", color: "#6df0a5" },
       { name: "Time Management", subtitle: "Reliable planning and prioritization", icon: "schedule", color: "#ffa657" },
-      { name: "Teamwork and Leadership", subtitle: "Collaborative execution and ownership", icon: "groups", color: "#b892ff" }
+      { name: "Resourcefulness", subtitle: "Practical solutions with available resources", icon: "tips_and_updates", color: "#66e3ff" }
     ];
 
     // PROJECT TOGGLE + PREVIEW
