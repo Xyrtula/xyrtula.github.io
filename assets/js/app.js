@@ -27,7 +27,7 @@
         role: "Researcher",
         summary: "As part of my academic research, I author scientific articles and technical reports.",
         features: [
-          "Z. M. Ozgen, U. Tezcan Un, and O. Onay, "Electrochemical Wastewater Treatment and Hydrogen Production," in New Concepts and Advanced Studies in Engineering, O. Umut, Bidge, 2025, 12, 335-357",
+          "Z. M. Ozgen, U. Tezcan Un, and O. Onay, 'Electrochemical Wastewater Treatment and Hydrogen Production', in New Concepts and Advanced Studies in Engineering, O. Umut, Bidge, 2025, 12, 335-357",
           "Coming Soon",
           "Coming Soon"
         ],
