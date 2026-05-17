@@ -77,6 +77,7 @@
           "Coming Soon"
         ],
         link: ""
+        }
     ];
 
     const JOURNEY_ITEMS = [
