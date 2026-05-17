@@ -7,23 +7,23 @@
     const WORK_PROJECTS = [
       {
         kind: "work",
-        title: "TUBITAK 1002 Research Project",
-        acronym: "TUBITAK 1002",
+        title: "Holistic Process Optimization for Real Textile Wastewater Treatment: Pollutant Removal and Cathodic Green Hydrogen Production. Research Project",
+        acronym: "RESEARCHER",
         wordmark: "TUBITAK 1002",
         role: "Researcher",
-        summary: "A research project on holistic process optimization for real textile wastewater treatment, pollutant removal, and cathodic green hydrogen production under the supervision of Prof. Dr. Umran Tezcan Un.",
+        summary: "A funded TUBITAK research project on holistic process optimization for real textile wastewater treatment, pollutant removal, and cathodic green hydrogen production under the supervision of Prof. Dr. Umran Tezcan Un.",
         features: [
-          "Performs experiments for wastewater treatment and energy recovery.",
-          "Analyzes experimental data to evaluate treatment efficiency.",
+          "Performs experiments for wastewater treatment and hydrogen recovery.",
+          "Analyzes experimental data to evaluate treatment and energy efficiencies.",
           "Contributes to process optimization for pollutant removal and green hydrogen production."
         ],
         link: ""
       },
       {
-        kind: "personal",
-        title: "Publishing",
+        kind: "work",
+        title: "Publications",
         acronym: "WRITER",
-        wordmark: "Researcher",
+        wordmark: "Publications",
         role: "Researcher",
         summary: "As part of my academic research, I author scientific articles and technical reports.",
         features: [
