@@ -21,20 +21,6 @@
       },
       {
         kind: "work",
-        title: "Publications",
-        acronym: "AUTHOR",
-        wordmark: "Publications",
-        role: "Researcher",
-        summary: "As part of my academic research, I author scientific articles and technical reports.",
-        features: [
-          "Z. M. Ozgen, U. Tezcan Un, and O. Onay, 'Electrochemical Wastewater Treatment and Hydrogen Production', in New Concepts and Advanced Studies in Engineering, O. Umut, Bidge, 2025, 12, 335-357",
-          "Coming Soon",
-          "Coming Soon"
-        ],
-        link: ""
-      },
-      {
-        kind: "work",
         title: "Game Development Initiative",
         acronym: "FOUNDER",
         wordmark: "Xyrtuland Games",
@@ -77,7 +63,20 @@
           "Connected pollution analysis with sustainability awareness."
         ],
         link: "assets/BscThesis.pdf"
-      }
+      },
+      {
+        kind: "work",
+        title: "Publications",
+        acronym: "AUTHOR",
+        wordmark: "Publications",
+        role: "Researcher",
+        summary: "As part of my academic research, I author scientific articles and technical reports.",
+        features: [
+          "Z. M. Ozgen, U. Tezcan Un, and O. Onay, 'Electrochemical Wastewater Treatment and Hydrogen Production', in New Concepts and Advanced Studies in Engineering, O. Umut, Bidge, 2025, 12, 335-357",
+          "Coming Soon",
+          "Coming Soon"
+        ],
+        link: ""
     ];
 
     const JOURNEY_ITEMS = [
@@ -89,9 +88,9 @@
         focus: "Wastewater Treatment / Green Hydrogen",
         summary: "Working as a researcher on the TUBITAK 1002 project titled \"Holistic Process Optimization for Real Textile Wastewater Treatment: Pollutant Removal and Cathodic Green Hydrogen Production.\"",
         highlights: [
-          "Performs laboratory experiments under the supervision of Prof. Dr. Umran Tezcan Un.",
-          "Uses data analysis and process optimization to improve treatment efficiency.",
-          "Works on energy recovery through cathodic green hydrogen production."
+          "Executing electrochemical trials using stainless steel electrodes to maximize simultaneous pollutant removal and hydrogen evolution.",
+          "Performing statistical analysis and response surface modeling to evaluate treatment efficacy and energy consumption.",
+          "Optimizing operational parameters to achieve high-purity green hydrogen generation alongside effective wastewater remediation."
         ]
       },
       {
