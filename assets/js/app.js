@@ -11,18 +11,18 @@
         acronym: "RESEARCHER",
         wordmark: "TUBITAK 1002",
         role: "Researcher",
-        summary: "A funded TUBITAK research project on holistic process optimization for real textile wastewater treatment, pollutant removal, and cathodic green hydrogen production under the supervision of Prof. Dr. Umran Tezcan Un.",
+        summary: "Supported by the TUBITAK 1002 program and supervised by Prof. Dr. Umran Tezcan Un, this project explores sustainable electrochemical pathways to simultaneously remediate industrial effluents and recover clean energy.",
         features: [
-          "Performs experiments for wastewater treatment and hydrogen recovery.",
-          "Analyzes experimental data to evaluate treatment and energy efficiencies.",
-          "Contributes to process optimization for pollutant removal and green hydrogen production."
+          "Executing electrochemical trials using stainless steel electrodes to maximize simultaneous pollutant removal and hydrogen evolution.",
+          "Performing statistical analysis and response surface modeling to evaluate treatment efficacy and energy consumption.",
+          "Optimizing operational parameters to achieve high-purity green hydrogen generation alongside effective wastewater remediation."
         ],
         link: ""
       },
       {
         kind: "work",
         title: "Publications",
-        acronym: "WRITER",
+        acronym: "AUTHOR",
         wordmark: "Publications",
         role: "Researcher",
         summary: "As part of my academic research, I author scientific articles and technical reports.",
@@ -35,7 +35,7 @@
       },
       {
         kind: "work",
-        title: "Game Development Project",
+        title: "Game Development Initiative",
         acronym: "FOUNDER",
         wordmark: "Xyrtuland Games",
         role: "Founder",
