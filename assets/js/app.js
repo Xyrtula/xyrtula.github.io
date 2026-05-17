@@ -20,32 +20,32 @@
         link: ""
       },
       {
-        kind: "work",
-        title: "Urasco Chemicals - Egypt",
-        acronym: "TECHNICAL MANAGER",
-        wordmark: "Technical Manager",
-        role: "Technical Manager",
-        summary: "Led technical service operations for textile digital printing customers across Egypt after building and coordinating a team of four engineers.",
+        kind: "personal",
+        title: "Publishing",
+        acronym: "WRITER",
+        wordmark: "Researcher",
+        role: "Researcher",
+        summary: "As part of my academic research, I author scientific articles and technical reports.",
         features: [
-          "Managed technical support for approximately 30 high-production customers.",
-          "Coordinated field maintenance and service planning over a broad region.",
-          "Connected customer needs with practical engineering solutions."
+          "Z. M. Ozgen, U. Tezcan Un, and O. Onay, "Electrochemical Wastewater Treatment and Hydrogen Production," in New Concepts and Advanced Studies in Engineering, O. Umut, Bidge, 2025, 12, 335-357",
+          "Coming Soon",
+          "Coming Soon"
         ],
         link: ""
       },
       {
         kind: "work",
-        title: "Urasco Chemicals - Turkiye",
-        acronym: "MAINTENANCE ENGINEER",
-        wordmark: "Maintenance",
-        role: "Maintenance Engineer",
-        summary: "Worked in textile digital printing maintenance after an intensive training period, supporting technical continuity and service reliability.",
+        title: "Game Development Project",
+        acronym: "FOUNDER",
+        wordmark: "Xyrtuland Games",
+        role: "Founder",
+        summary: "Leveraged GDevelop and visual scripting to independently design and develop two mobile games for Android.",
         features: [
-          "Completed around three months of textile digital printing training.",
-          "Maintained digital printing systems and supported production continuity.",
-          "Built fast, practical experience in technical troubleshooting."
+          "Developed and launched two standalone Android mobile games: 'IFO: Black Hole' and 'IFO: Diagonally'.",
+          "Engineered core game mechanics and logic utilizing visual scripting within the GDevelop engine.",
+          "Successfully managed the complete end-to-end personal development cycle, finalizing both titles in 2019."
         ],
-        link: ""
+        link: "https://play.google.com/store/apps/dev?id=5933746138444564349"
       }
     ];
 
