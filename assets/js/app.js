@@ -732,10 +732,32 @@
       }
 
       function wrapPosition(particle) {
-        if (particle.x < 0) particle.x += w;
-        if (particle.x >= w) particle.x -= w;
-        if (particle.y < 0) particle.y += h;
-        if (particle.y >= h) particle.y -= h;
+        if (!Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0) return;
+        particle.x = ((particle.x % w) + w) % w;
+        particle.y = ((particle.y % h) + h) % h;
+      }
+
+      function randomizeParticle(particle, kind = particle.kind || (Math.random() < 0.5 ? 'blue' : 'red')) {
+        particle.kind = kind;
+        particle.x = Math.random() * Math.max(w, 1);
+        particle.y = Math.random() * Math.max(h, 1);
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.35 + Math.random() * 0.65;
+        particle.vx = Math.cos(angle) * speed;
+        particle.vy = Math.sin(angle) * speed;
+        particle.r = Math.random() * 2.4 + 1.8;
+      }
+
+      function sanitizeParticle(particle) {
+        if (
+          Number.isFinite(particle.x) &&
+          Number.isFinite(particle.y) &&
+          Number.isFinite(particle.vx) &&
+          Number.isFinite(particle.vy) &&
+          Number.isFinite(particle.r) &&
+          particle.r > 0
+        ) return;
+        randomizeParticle(particle);
       }
 
       function applyMutualGravity() {
@@ -743,10 +765,12 @@
           for (let j = i + 1; j < particles.length; j++) {
             const a = particles[i];
             const b = particles[j];
+            sanitizeParticle(a);
+            sanitizeParticle(b);
             const { dx, dy } = wrappedDelta(a, b);
             const distSqRaw = dx * dx + dy * dy;
             const reach = Math.max(GRAVITY_REACH, (a.r + b.r) * 14);
-            if (distSqRaw < 0.01 || distSqRaw > reach * reach) continue;
+            if (!Number.isFinite(distSqRaw) || distSqRaw < 0.01 || distSqRaw > reach * reach) continue;
             const distSq = distSqRaw + GRAVITY_SOFTENING;
             const dist = Math.sqrt(distSqRaw);
             const force = GRAVITY * mass(a) * mass(b) / distSq;
@@ -804,17 +828,10 @@
 
       class Particle {
         constructor(kind = Math.random() < 0.5 ? 'blue' : 'red') {
-          this.kind = kind;
-          const startsLeft = kind === 'blue';
-          const sideStart = startsLeft ? 0 : w * 0.55;
-          const sideWidth = Math.max(w * 0.45, 1);
-          this.x = sideStart + Math.random() * sideWidth;
-          this.y = Math.random() * h;
-          this.vx = (startsLeft ? 0.25 : -0.25) + (Math.random() - 0.5) * 0.52;
-          this.vy = (Math.random() - 0.5) * 0.52;
-          this.r = Math.random() * 2.4 + 1.8;
+          randomizeParticle(this, kind);
         }
         update() {
+          sanitizeParticle(this);
           const dx = this.x - mouse.x, dy = this.y - mouse.y, dist = Math.sqrt(dx*dx+dy*dy);
           if (dist < MOUSE_RADIUS) { const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.03; this.vx += dx * force; this.vy += dy * force; }
           this.vx *= 0.992; this.vy *= 0.992;
@@ -833,6 +850,7 @@
           wrapPosition(this);
         }
         draw() {
+          sanitizeParticle(this);
           const palette = COLORS[this.kind];
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
@@ -856,17 +874,23 @@
       }
 
       function resetParticles() {
+        setCanvasSize();
         particles = [];
         syncParticleCount();
       }
 
       window.resetParticleField = resetParticles;
 
+      function setCanvasSize() {
+        w = canvas.width = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
+        h = canvas.height = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
+      }
+
       function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+        setCanvasSize();
         syncParticleCount();
         particles.forEach(p => {
+          sanitizeParticle(p);
           p.r = Math.min(p.r, getMaxRadius(p.kind));
           p.x = ((p.x % w) + w) % w;
           p.y = ((p.y % h) + h) % h;
@@ -876,59 +900,21 @@
       resize();
       window.addEventListener('resize', resize);
 
-      function absorbParticle(keeper, consumed, growthRatio) {
-        const previousMass = mass(keeper);
-        const previousVx = keeper.vx;
-        const previousVy = keeper.vy;
-        keeper.r = growRadius(keeper.r, consumed.r, growthRatio, keeper.kind);
-        const totalMass = previousMass + mass(consumed);
-        keeper.vx = ((previousVx * previousMass) + (consumed.vx * mass(consumed))) / totalMass;
-        keeper.vy = ((previousVy * previousMass) + (consumed.vy * mass(consumed))) / totalMass;
-      }
-
       function resolveCollisions() {
         for (let i = particles.length - 1; i >= 0; i--) {
           for (let j = i - 1; j >= 0; j--) {
             const a = particles[i];
             const b = particles[j];
+            sanitizeParticle(a);
+            sanitizeParticle(b);
             const dx = a.x - b.x;
             const dy = a.y - b.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist > a.r + b.r) continue;
+            if (!Number.isFinite(dist) || dist > a.r + b.r) continue;
             const { nx, ny } = separatePair(a, b, dist, dx, dy);
-
-            if ((a.kind === 'red' && b.kind === 'blue') || (a.kind === 'blue' && b.kind === 'red')) {
-              const keeper = a.r >= b.r ? a : b;
-              const consumedIndex = keeper === a ? j : i;
-              preserveMomentum(keeper, a, b);
-              keeper.kind = Math.random() < 0.75 ? 'white' : 'black';
-              keeper.r = Math.min(getMaxRadius(keeper.kind), Math.max(a.r, b.r) * 1.3);
-              particles.splice(consumedIndex, 1);
-              if (consumedIndex === i) break;
-              continue;
-            }
-
-            if (isCollector(a) && isCollector(b) && a.kind === b.kind) {
-              const keeper = a.r >= b.r ? a : b;
-              const consumedIndex = keeper === a ? j : i;
-              preserveMomentum(keeper, a, b);
-              keeper.r = growRadius(Math.max(a.r, b.r), Math.min(a.r, b.r), 0.7, keeper.kind);
-              particles.splice(consumedIndex, 1);
-              if (consumedIndex === i) break;
-              continue;
-            }
-
-            if (isCollector(a) || isCollector(b)) {
-              const keeper = isCollector(a) && !isCollector(b) ? a : isCollector(b) && !isCollector(a) ? b : a.r >= b.r ? a : b;
-              const consumedIndex = keeper === a ? j : i;
-              const consumed = keeper === a ? b : a;
-              absorbParticle(keeper, consumed, 0.3);
-              particles.splice(consumedIndex, 1);
-              if (consumedIndex === i) break;
-              continue;
-            }
-
             bouncePair(a, b, nx, ny);
+            wrapPosition(a);
+            wrapPosition(b);
           }
         }
       }
@@ -951,6 +937,7 @@
       }
       function animate() {
         ctx.clearRect(0,0,w,h);
+        if (!particles.length) syncParticleCount();
         applyMutualGravity();
         particles.forEach(p => p.update());
         resolveCollisions();
