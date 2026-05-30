@@ -769,9 +769,6 @@
             const a = particles[i];
             const b = particles[j];
             if (a.dead || b.dead) continue;
-            if ((a.kind === 'white' && b.kind !== 'white') || (b.kind === 'white' && a.kind !== 'white')) {
-        continue;
-      }
             sanitizeParticle(a);
             sanitizeParticle(b);
             const { dx, dy } = wrappedDelta(a, b);
@@ -911,71 +908,35 @@
       window.addEventListener('resize', resize);
 
       function resolveCollisions() {
-  for (let i = particles.length - 1; i >= 0; i--) {
-    for (let j = i - 1; j >= 0; j--) {
-      const a = particles[i];
-      const b = particles[j];
-      if (a.dead || b.dead) continue;
-      sanitizeParticle(a);
-      sanitizeParticle(b);
-      const dx = a.x - b.x;
-      const dy = a.y - b.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (!Number.isFinite(dist) || dist > a.r + b.r) continue;
-
-      // İki topun birbirine göre olan bağıl hızı hesaplanır
-      const rvx = a.vx - b.vx;
-      const rvy = a.vy - b.vy;
-      const nx = dist > 0 ? dx / dist : 1;
-      const ny = dist > 0 ? dy / dist : 0;
-      const relativeVelocityAlongNormal = rvx * nx + rvy * ny;
-
-      // Durum 1: İki beyaz topun etkileşimi
-      if (a.kind === 'white' && b.kind === 'white') {
-        const speedEshigi = -1.2; // Yüksek hız eşiği (Negatif çünkü birbirlerine doğru hareket ediyorlar)
-
-        if (relativeVelocityAlongNormal < speedEshigi) {
-          // HIZLI ÇARPIŞMA -> BİRLEŞİRLER
-          const white = a.r >= b.r ? a : b;
-          const swallowed = white === a ? b : a;
-          preserveMomentum(white, a, b);
-          white.kind = 'white';
-          white.r = growRadius(white.r, swallowed.r, SWALLOW_GROWTH_RATIO, 'white');
-          white.r = Math.min(white.r, getMaxRadius('white'));
-          swallowed.dead = true;
-          wrapPosition(white);
-        } else {
-          // YAVAŞ YAKLAŞMA -> BİRBİRLERİNİ KUVVETLİCE İTSİNLER VE BİRLEŞMESİNLER
-          separatePair(a, b, dist, dx, dy);
-          // Normal elastik çarpışmadan çok daha yüksek bir itme kuvveti (restitution) uyguluyoruz
-          bouncePair(a, b, nx, ny, 2.5); 
-          wrapPosition(a);
-          wrapPosition(b);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          for (let j = i - 1; j >= 0; j--) {
+            const a = particles[i];
+            const b = particles[j];
+            if (a.dead || b.dead) continue;
+            sanitizeParticle(a);
+            sanitizeParticle(b);
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (!Number.isFinite(dist) || dist > a.r + b.r) continue;
+            const { nx, ny } = separatePair(a, b, dist, dx, dy);
+            if (a.kind === 'white' || b.kind === 'white') {
+              const white = a.kind === 'white' && b.kind !== 'white' ? a : b.kind === 'white' && a.kind !== 'white' ? b : a.r >= b.r ? a : b;
+              const swallowed = white === a ? b : a;
+              preserveMomentum(white, a, b);
+              white.kind = 'white';
+              white.r = growRadius(white.r, swallowed.r, SWALLOW_GROWTH_RATIO, 'white');
+              white.r = Math.min(white.r, getMaxRadius('white'));
+              swallowed.dead = true;
+              wrapPosition(white);
+              continue;
+            }
+            bouncePair(a, b, nx, ny);
+            wrapPosition(a);
+            wrapPosition(b);
+          }
         }
-        continue;
       }
-
-      // Durum 2: Renkli toplardan birinin beyaz top tarafından yutulması (Mevcut eski mekanik)
-      if (a.kind === 'white' || b.kind === 'white') {
-        const white = a.kind === 'white' ? a : b;
-        const swallowed = white === a ? b : a;
-        preserveMomentum(white, a, b);
-        white.kind = 'white';
-        white.r = growRadius(white.r, swallowed.r, SWALLOW_GROWTH_RATIO, 'white');
-        white.r = Math.min(white.r, getMaxRadius('white'));
-        swallowed.dead = true;
-        wrapPosition(white);
-        continue;
-      }
-
-      // Durum 3: Standart renkli top çarpışması
-      separatePair(a, b, dist, dx, dy);
-      bouncePair(a, b, nx, ny, 0.88);
-      wrapPosition(a);
-      wrapPosition(b);
-    }
-  }
-}
 
       function connectParticles() {
         particles.forEach(p => { p.connectionCount = 0; });
