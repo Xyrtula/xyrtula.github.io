@@ -666,6 +666,14 @@
     setTimeout(() => { heroPhoto.classList.add('swapped'); }, 5000);
     setTimeout(() => { heroPhoto.classList.remove('swapped'); }, 10000);
 
+    const playZoneReset = document.getElementById('playZoneReset');
+    playZoneReset?.addEventListener('click', () => {
+      window.resetParticleField?.();
+      playZoneReset.classList.remove('is-resetting');
+      void playZoneReset.offsetWidth;
+      playZoneReset.classList.add('is-resetting');
+    });
+
     // INTERACTIVE PARTICLE NETWORK
     (function() {
       const canvas = document.getElementById('particleCanvas');
@@ -820,6 +828,13 @@
         if (particles.length > targetCount) particles.length = targetCount;
       }
 
+      function resetParticles() {
+        particles = [];
+        syncParticleCount();
+      }
+
+      window.resetParticleField = resetParticles;
+
       function resize() {
         w = canvas.width = window.innerWidth;
         h = canvas.height = window.innerHeight;
@@ -916,7 +931,15 @@
         requestAnimationFrame(animate);
       }
       animate();
+      window.addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
       window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('touchmove', e => {
+        const touch = e.touches[0];
+        if (!touch) return;
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
+      }, { passive: true });
+      window.addEventListener('pointerleave', () => { mouse.x = -999; mouse.y = -999; });
       window.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
     })();
 

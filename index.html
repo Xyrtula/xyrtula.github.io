@@ -23,7 +23,7 @@
             <li><a href="#about" data-section="1">About</a></li>
             <li><a href="#skills" data-section="2">Skills</a></li>
             <li><a href="#projects" data-section="3">Projects</a></li>
-            <li><a href="#contact" data-section="4">Contact</a></li>
+            <li><a href="#contact" data-section="5">Contact</a></li>
         </ul>
         <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
             <span class="material-symbols-outlined">menu</span>
@@ -35,7 +35,7 @@
         <button class="dot-nav-item" data-section="1" aria-label="Go to About"><span class="dot-nav-tooltip">About</span></button>
         <button class="dot-nav-item" data-section="2" aria-label="Go to Skills"><span class="dot-nav-tooltip">Skills</span></button>
         <button class="dot-nav-item" data-section="3" aria-label="Go to Projects"><span class="dot-nav-tooltip">Projects</span></button>
-        <button class="dot-nav-item" data-section="4" aria-label="Go to Contact"><span class="dot-nav-tooltip">Contact</span></button>
+        <button class="dot-nav-item" data-section="5" aria-label="Go to Contact"><span class="dot-nav-tooltip">Contact</span></button>
     </div>
 
     <section class="fp-section" id="hero" data-index="0">
@@ -46,7 +46,7 @@
                 <p class="hero-subtitle"><span id="typewriter"></span><span class="typewriter-cursor"></span></p>
                 <div class="hero-buttons">
                     <a href="https://drive.google.com/file/d/1qR51XLJC5oqfMStcPwu5U9KlvhIX8ME0/view?usp=sharing" target="_blank" class="btn btn-primary">Curriculum Vitae</a>
-                    <a href="#contact" class="btn btn-outline" id="heroContactButton" data-section-target="4" data-focus-target="#contact-name">Contact Me</a>
+                    <a href="#contact" class="btn btn-outline" id="heroContactButton" data-section-target="5" data-focus-target="#contact-name">Contact Me</a>
                 </div>
             </div>
             <div class="hero-right" id="heroPhoto">
@@ -120,7 +120,20 @@
         </div>
     </section>
 
-    <section class="fp-section" id="contact" data-index="4">
+    <section class="fp-section play-zone-section" id="play-zone" data-index="4" data-nav-hidden="true">
+        <span class="section-watermark" aria-hidden="true">05</span>
+        <div class="section-inner">
+            <div class="play-zone-header reveal-item">
+                <h2 class="section-heading">Play Zone</h2>
+                <button type="button" class="play-zone-reset" id="playZoneReset" aria-label="Reset Play Zone balls" title="Reset">
+                    <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+                </button>
+            </div>
+            <div class="play-zone-space" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <section class="fp-section" id="contact" data-index="5">
         <span class="section-watermark" aria-hidden="true">06</span>
         <div class="section-inner">
             <div class="contact-content">
