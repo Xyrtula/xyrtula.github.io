@@ -688,14 +688,70 @@
         return PARTICLE_COUNTS.desktop;
       }
 
-      function getMaxRadius() {
-        if (window.innerWidth <= 640) return 44;
-        if (window.innerWidth <= RESPONSIVE_BREAKPOINT || window.innerHeight <= RESPONSIVE_HEIGHT_BREAKPOINT) return 58;
-        return 82;
+      function getMaxRadius(kind = '') {
+        if (kind === 'white') {
+          if (window.innerWidth <= 640) return 22;
+          if (window.innerWidth <= RESPONSIVE_BREAKPOINT || window.innerHeight <= RESPONSIVE_HEIGHT_BREAKPOINT) return 30;
+          return 42;
+        }
+        if (kind === 'black') {
+          if (window.innerWidth <= 640) return 30;
+          if (window.innerWidth <= RESPONSIVE_BREAKPOINT || window.innerHeight <= RESPONSIVE_HEIGHT_BREAKPOINT) return 40;
+          return 56;
+        }
+        if (window.innerWidth <= 640) return 8;
+        if (window.innerWidth <= RESPONSIVE_BREAKPOINT || window.innerHeight <= RESPONSIVE_HEIGHT_BREAKPOINT) return 10;
+        return 12;
       }
 
       function isCollector(particle) {
         return particle.kind === 'white' || particle.kind === 'black';
+      }
+
+      function mass(particle) {
+        return particle.r * particle.r;
+      }
+
+      function growRadius(base, addition, ratio, kind) {
+        const cap = getMaxRadius(kind);
+        const areaRadius = Math.sqrt((base * base) + (addition * addition * ratio));
+        const remaining = Math.max(0, 1 - base / cap);
+        const softenedGrowth = Math.max(0.04, (areaRadius - base) * Math.max(0.18, remaining));
+        return Math.min(cap, base + softenedGrowth);
+      }
+
+      function preserveMomentum(keeper, a, b) {
+        const totalMass = mass(a) + mass(b);
+        keeper.vx = ((a.vx * mass(a)) + (b.vx * mass(b))) / totalMass;
+        keeper.vy = ((a.vy * mass(a)) + (b.vy * mass(b))) / totalMass;
+      }
+
+      function separatePair(a, b, dist, dx, dy) {
+        const minDist = a.r + b.r;
+        const nx = dist > 0 ? dx / dist : 1;
+        const ny = dist > 0 ? dy / dist : 0;
+        const overlap = minDist - dist;
+        if (overlap <= 0) return { nx, ny };
+        const totalMass = mass(a) + mass(b);
+        const aShare = mass(b) / totalMass;
+        const bShare = mass(a) / totalMass;
+        a.x += nx * overlap * aShare;
+        a.y += ny * overlap * aShare;
+        b.x -= nx * overlap * bShare;
+        b.y -= ny * overlap * bShare;
+        return { nx, ny };
+      }
+
+      function bouncePair(a, b, nx, ny, restitution = 0.88) {
+        const rvx = a.vx - b.vx;
+        const rvy = a.vy - b.vy;
+        const velocityAlongNormal = rvx * nx + rvy * ny;
+        if (velocityAlongNormal > 0) return;
+        const impulse = (-(1 + restitution) * velocityAlongNormal) / ((1 / mass(a)) + (1 / mass(b)));
+        a.vx += (impulse / mass(a)) * nx;
+        a.vy += (impulse / mass(a)) * ny;
+        b.vx -= (impulse / mass(b)) * nx;
+        b.vy -= (impulse / mass(b)) * ny;
       }
 
       class Particle {
@@ -720,7 +776,7 @@
               const reach = Math.max(190, attractor.r * 8);
               if (distSq < 1 || distSq > reach * reach) return;
               const dist = Math.sqrt(distSq);
-              const force = (1 - dist / reach) * (attractor.r / getMaxRadius()) * 0.018;
+              const force = (1 - dist / reach) * (attractor.r / getMaxRadius(attractor.kind)) * 0.015;
               this.vx += (dx / dist) * force;
               this.vy += (dy / dist) * force;
             });
@@ -735,7 +791,7 @@
           if (dist < MOUSE_RADIUS) { const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.03; this.vx += dx * force; this.vy += dy * force; }
           this.vx *= 0.992; this.vy *= 0.992;
           const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-          const maxSpeed = isCollector(this) ? 1.45 : 2.2;
+          const maxSpeed = isCollector(this) ? 1.25 : 2;
           if (speed > maxSpeed) {
             this.vx = (this.vx / speed) * maxSpeed;
             this.vy = (this.vy / speed) * maxSpeed;
@@ -769,7 +825,7 @@
         h = canvas.height = window.innerHeight;
         syncParticleCount();
         particles.forEach(p => {
-          p.r = Math.min(p.r, getMaxRadius());
+          p.r = Math.min(p.r, getMaxRadius(p.kind));
           if (p.x > w - p.r) p.x = w - p.r;
           if (p.y > h - p.r) p.y = h - p.r;
         });
@@ -779,9 +835,13 @@
       window.addEventListener('resize', resize);
 
       function absorbParticle(keeper, consumed, growthRatio) {
-        keeper.r = Math.min(getMaxRadius(), keeper.r + consumed.r * growthRatio);
-        keeper.vx = (keeper.vx + consumed.vx) * 0.45;
-        keeper.vy = (keeper.vy + consumed.vy) * 0.45;
+        const previousMass = mass(keeper);
+        const previousVx = keeper.vx;
+        const previousVy = keeper.vy;
+        keeper.r = growRadius(keeper.r, consumed.r, growthRatio, keeper.kind);
+        const totalMass = previousMass + mass(consumed);
+        keeper.vx = ((previousVx * previousMass) + (consumed.vx * mass(consumed))) / totalMass;
+        keeper.vy = ((previousVy * previousMass) + (consumed.vy * mass(consumed))) / totalMass;
       }
 
       function resolveCollisions() {
@@ -793,14 +853,14 @@
             const dy = a.y - b.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist > a.r + b.r) continue;
+            const { nx, ny } = separatePair(a, b, dist, dx, dy);
 
             if ((a.kind === 'red' && b.kind === 'blue') || (a.kind === 'blue' && b.kind === 'red')) {
               const keeper = a.r >= b.r ? a : b;
               const consumedIndex = keeper === a ? j : i;
-              keeper.kind = Math.random() < 0.99 ? 'white' : 'black';
-              keeper.r = Math.min(getMaxRadius(), Math.max(a.r, b.r) * 1.3);
-              keeper.vx = (a.vx + b.vx) * 0.35;
-              keeper.vy = (a.vy + b.vy) * 0.35;
+              preserveMomentum(keeper, a, b);
+              keeper.kind = Math.random() < 0.75 ? 'white' : 'black';
+              keeper.r = Math.min(getMaxRadius(keeper.kind), Math.max(a.r, b.r) * 1.3);
               particles.splice(consumedIndex, 1);
               if (consumedIndex === i) break;
               continue;
@@ -809,22 +869,24 @@
             if (isCollector(a) && isCollector(b) && a.kind === b.kind) {
               const keeper = a.r >= b.r ? a : b;
               const consumedIndex = keeper === a ? j : i;
-              keeper.r = Math.min(getMaxRadius(), (a.r + b.r) * 0.7);
-              keeper.vx = (a.vx + b.vx) * 0.35;
-              keeper.vy = (a.vy + b.vy) * 0.35;
+              preserveMomentum(keeper, a, b);
+              keeper.r = growRadius(Math.max(a.r, b.r), Math.min(a.r, b.r), 0.7, keeper.kind);
               particles.splice(consumedIndex, 1);
               if (consumedIndex === i) break;
               continue;
             }
 
             if (isCollector(a) || isCollector(b)) {
-              const keeper = a.r >= b.r ? a : b;
+              const keeper = isCollector(a) && !isCollector(b) ? a : isCollector(b) && !isCollector(a) ? b : a.r >= b.r ? a : b;
               const consumedIndex = keeper === a ? j : i;
               const consumed = keeper === a ? b : a;
               absorbParticle(keeper, consumed, 0.3);
               particles.splice(consumedIndex, 1);
               if (consumedIndex === i) break;
+              continue;
             }
+
+            bouncePair(a, b, nx, ny);
           }
         }
       }
