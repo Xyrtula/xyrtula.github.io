@@ -670,10 +670,17 @@
     (function() {
       const canvas = document.getElementById('particleCanvas');
       if (!canvas) return;
+      document.body.insertBefore(canvas, document.querySelector('.noise-overlay'));
       const ctx = canvas.getContext('2d');
       let w, h, particles = [], mouse = { x: -999, y: -999 };
       const PARTICLE_COUNTS = { desktop: 420, tablet: 160, phone: 85 };
-      const CONNECT_DIST = 140, MOUSE_RADIUS = 160;
+      const CONNECT_DIST = 128, MOUSE_RADIUS = 160;
+      const COLORS = {
+        blue: { fill: 'rgba(58,137,255,0.72)', line: '58,137,255' },
+        red: { fill: 'rgba(255,58,58,0.74)', line: '255,58,58' },
+        white: { fill: 'rgba(255,255,255,0.86)', line: '255,255,255' },
+        black: { fill: 'rgba(2,2,5,0.92)', line: '15,15,18' }
+      };
 
       function getParticleCount() {
         if (window.innerWidth <= 640) return PARTICLE_COUNTS.phone;
@@ -681,47 +688,173 @@
         return PARTICLE_COUNTS.desktop;
       }
 
+      function getMaxRadius() {
+        if (window.innerWidth <= 640) return 44;
+        if (window.innerWidth <= RESPONSIVE_BREAKPOINT || window.innerHeight <= RESPONSIVE_HEIGHT_BREAKPOINT) return 58;
+        return 82;
+      }
+
+      function isCollector(particle) {
+        return particle.kind === 'white' || particle.kind === 'black';
+      }
+
       class Particle {
-        constructor() { this.x = Math.random() * w; this.y = Math.random() * h; this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5; this.r = Math.random() * 2.4 + 1.6; }
+        constructor(kind = Math.random() < 0.5 ? 'blue' : 'red') {
+          this.kind = kind;
+          const startsLeft = kind === 'blue';
+          const sideStart = startsLeft ? 0 : w * 0.55;
+          const sideWidth = Math.max(w * 0.45, 1);
+          this.x = sideStart + Math.random() * sideWidth;
+          this.y = Math.random() * h;
+          this.vx = (startsLeft ? 0.25 : -0.25) + (Math.random() - 0.5) * 0.52;
+          this.vy = (Math.random() - 0.5) * 0.52;
+          this.r = Math.random() * 2.4 + 1.8;
+        }
         update() {
+          if (!isCollector(this)) {
+            particles.forEach(attractor => {
+              if (!isCollector(attractor) || attractor === this) return;
+              const dx = attractor.x - this.x;
+              const dy = attractor.y - this.y;
+              const distSq = dx * dx + dy * dy;
+              const reach = Math.max(190, attractor.r * 8);
+              if (distSq < 1 || distSq > reach * reach) return;
+              const dist = Math.sqrt(distSq);
+              const force = (1 - dist / reach) * (attractor.r / getMaxRadius()) * 0.018;
+              this.vx += (dx / dist) * force;
+              this.vy += (dy / dist) * force;
+            });
+          }
+
           this.x += this.vx; this.y += this.vy;
-          if (this.x < 0 || this.x > w) this.vx *= -1;
-          if (this.y < 0 || this.y > h) this.vy *= -1;
+          if (this.x < this.r) { this.x = this.r; this.vx = Math.abs(this.vx); }
+          if (this.x > w - this.r) { this.x = w - this.r; this.vx = -Math.abs(this.vx); }
+          if (this.y < this.r) { this.y = this.r; this.vy = Math.abs(this.vy); }
+          if (this.y > h - this.r) { this.y = h - this.r; this.vy = -Math.abs(this.vy); }
           const dx = this.x - mouse.x, dy = this.y - mouse.y, dist = Math.sqrt(dx*dx+dy*dy);
           if (dist < MOUSE_RADIUS) { const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.03; this.vx += dx * force; this.vy += dy * force; }
-          this.vx *= 0.99; this.vy *= 0.99;
+          this.vx *= 0.992; this.vy *= 0.992;
+          const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+          const maxSpeed = isCollector(this) ? 1.45 : 2.2;
+          if (speed > maxSpeed) {
+            this.vx = (this.vx / speed) * maxSpeed;
+            this.vy = (this.vy / speed) * maxSpeed;
+          }
         }
-        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(32,213,216,0.5)'; ctx.fill(); }
+        draw() {
+          const palette = COLORS[this.kind];
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fillStyle = palette.fill;
+          ctx.shadowColor = this.kind === 'black' ? 'rgba(255,255,255,0.25)' : palette.fill;
+          ctx.shadowBlur = isCollector(this) ? 18 : 7;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          if (this.kind === 'black') {
+            ctx.strokeStyle = 'rgba(255,255,255,0.42)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
       }
 
       function syncParticleCount() {
         const targetCount = getParticleCount();
-        while (particles.length < targetCount) particles.push(new Particle());
+        while (particles.length < targetCount) particles.push(new Particle(particles.length % 2 === 0 ? 'blue' : 'red'));
         if (particles.length > targetCount) particles.length = targetCount;
       }
 
       function resize() {
-        const hero = document.getElementById('hero');
-        w = canvas.width = hero.offsetWidth;
-        h = canvas.height = hero.offsetHeight;
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
         syncParticleCount();
         particles.forEach(p => {
-          if (p.x > w) p.x = Math.random() * w;
-          if (p.y > h) p.y = Math.random() * h;
+          p.r = Math.min(p.r, getMaxRadius());
+          if (p.x > w - p.r) p.x = w - p.r;
+          if (p.y > h - p.r) p.y = h - p.r;
         });
       }
 
       resize();
       window.addEventListener('resize', resize);
-      function connectParticles() {
-        for (let i = 0; i < particles.length; i++) for (let j = i+1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, dist = Math.sqrt(dx*dx+dy*dy);
-          if (dist < CONNECT_DIST) { ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.strokeStyle = `rgba(32,213,216,${(1-dist/CONNECT_DIST)*0.25})`; ctx.lineWidth = 0.6; ctx.stroke(); }
+
+      function absorbParticle(keeper, consumed, growthRatio) {
+        keeper.r = Math.min(getMaxRadius(), keeper.r + consumed.r * growthRatio);
+        keeper.vx = (keeper.vx + consumed.vx) * 0.45;
+        keeper.vy = (keeper.vy + consumed.vy) * 0.45;
+      }
+
+      function resolveCollisions() {
+        for (let i = particles.length - 1; i >= 0; i--) {
+          for (let j = i - 1; j >= 0; j--) {
+            const a = particles[i];
+            const b = particles[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > a.r + b.r) continue;
+
+            if ((a.kind === 'red' && b.kind === 'blue') || (a.kind === 'blue' && b.kind === 'red')) {
+              const keeper = a.r >= b.r ? a : b;
+              const consumedIndex = keeper === a ? j : i;
+              keeper.kind = Math.random() < 0.99 ? 'white' : 'black';
+              keeper.r = Math.min(getMaxRadius(), Math.max(a.r, b.r) * 1.3);
+              keeper.vx = (a.vx + b.vx) * 0.35;
+              keeper.vy = (a.vy + b.vy) * 0.35;
+              particles.splice(consumedIndex, 1);
+              if (consumedIndex === i) break;
+              continue;
+            }
+
+            if (isCollector(a) && isCollector(b) && a.kind === b.kind) {
+              const keeper = a.r >= b.r ? a : b;
+              const consumedIndex = keeper === a ? j : i;
+              keeper.r = Math.min(getMaxRadius(), (a.r + b.r) * 0.7);
+              keeper.vx = (a.vx + b.vx) * 0.35;
+              keeper.vy = (a.vy + b.vy) * 0.35;
+              particles.splice(consumedIndex, 1);
+              if (consumedIndex === i) break;
+              continue;
+            }
+
+            if (isCollector(a) || isCollector(b)) {
+              const keeper = a.r >= b.r ? a : b;
+              const consumedIndex = keeper === a ? j : i;
+              const consumed = keeper === a ? b : a;
+              absorbParticle(keeper, consumed, 0.3);
+              particles.splice(consumedIndex, 1);
+              if (consumedIndex === i) break;
+            }
+          }
         }
       }
-      function animate() { ctx.clearRect(0,0,w,h); particles.forEach(p => { p.update(); p.draw(); }); connectParticles(); requestAnimationFrame(animate); }
+
+      function connectParticles() {
+        for (let i = 0; i < particles.length; i++) for (let j = i+1; j < particles.length; j++) {
+          if (particles[i].kind !== particles[j].kind) continue;
+          const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, dist = Math.sqrt(dx*dx+dy*dy);
+          const connectDist = isCollector(particles[i]) ? CONNECT_DIST * 0.72 : CONNECT_DIST;
+          if (dist < connectDist) {
+            const rgb = COLORS[particles[i].kind].line;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(${rgb},${(1-dist/connectDist)*0.22})`;
+            ctx.lineWidth = 0.55;
+            ctx.stroke();
+          }
+        }
+      }
+      function animate() {
+        ctx.clearRect(0,0,w,h);
+        particles.forEach(p => p.update());
+        resolveCollisions();
+        connectParticles();
+        particles.forEach(p => p.draw());
+        requestAnimationFrame(animate);
+      }
       animate();
-      document.getElementById('hero').addEventListener('mousemove', e => { const rect = canvas.getBoundingClientRect(); mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top; });
-      document.getElementById('hero').addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+      window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
     })();
 
