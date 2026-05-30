@@ -1002,7 +1002,7 @@
         #playZoneReset.play-zone-reset {
             position: absolute;
             left: 50%;
-            top: 50%;
+            top: 1%;
             width: 58px;
             height: 58px;
             border-radius: 8px;
