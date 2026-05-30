@@ -684,6 +684,7 @@
       const PARTICLE_COUNTS = { desktop: 420, tablet: 160, phone: 85 };
       const CONNECT_DIST = 128, MOUSE_RADIUS = 160;
       const GRAVITY = 0.018, GRAVITY_REACH = 260, GRAVITY_SOFTENING = 900, MIN_SPEED = 0.16;
+      const CONNECTION_THRESHOLD = 5, SWALLOW_GROWTH_RATIO = 0.42;
       const COLORS = {
         blue: { fill: 'rgba(58,137,255,0.72)', line: '58,137,255' },
         red: { fill: 'rgba(255,58,58,0.74)', line: '255,58,58' },
@@ -739,6 +740,8 @@
 
       function randomizeParticle(particle, kind = particle.kind || (Math.random() < 0.5 ? 'blue' : 'red')) {
         particle.kind = kind;
+        particle.dead = false;
+        particle.connectionCount = 0;
         particle.x = Math.random() * Math.max(w, 1);
         particle.y = Math.random() * Math.max(h, 1);
         const angle = Math.random() * Math.PI * 2;
@@ -765,6 +768,7 @@
           for (let j = i + 1; j < particles.length; j++) {
             const a = particles[i];
             const b = particles[j];
+            if (a.dead || b.dead) continue;
             sanitizeParticle(a);
             sanitizeParticle(b);
             const { dx, dy } = wrappedDelta(a, b);
@@ -794,6 +798,7 @@
 
       function preserveMomentum(keeper, a, b) {
         const totalMass = mass(a) + mass(b);
+        if (!Number.isFinite(totalMass) || totalMass <= 0) return;
         keeper.vx = ((a.vx * mass(a)) + (b.vx * mass(b))) / totalMass;
         keeper.vy = ((a.vy * mass(a)) + (b.vy * mass(b))) / totalMass;
       }
@@ -831,6 +836,7 @@
           randomizeParticle(this, kind);
         }
         update() {
+          if (this.dead) return;
           sanitizeParticle(this);
           const dx = this.x - mouse.x, dy = this.y - mouse.y, dist = Math.sqrt(dx*dx+dy*dy);
           if (dist < MOUSE_RADIUS) { const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.03; this.vx += dx * force; this.vy += dy * force; }
@@ -850,6 +856,7 @@
           wrapPosition(this);
         }
         draw() {
+          if (this.dead) return;
           sanitizeParticle(this);
           const palette = COLORS[this.kind];
           ctx.beginPath();
@@ -905,6 +912,7 @@
           for (let j = i - 1; j >= 0; j--) {
             const a = particles[i];
             const b = particles[j];
+            if (a.dead || b.dead) continue;
             sanitizeParticle(a);
             sanitizeParticle(b);
             const dx = a.x - b.x;
@@ -912,6 +920,17 @@
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (!Number.isFinite(dist) || dist > a.r + b.r) continue;
             const { nx, ny } = separatePair(a, b, dist, dx, dy);
+            if (a.kind === 'white' || b.kind === 'white') {
+              const white = a.kind === 'white' && b.kind !== 'white' ? a : b.kind === 'white' && a.kind !== 'white' ? b : a.r >= b.r ? a : b;
+              const swallowed = white === a ? b : a;
+              preserveMomentum(white, a, b);
+              white.kind = 'white';
+              white.r = growRadius(white.r, swallowed.r, SWALLOW_GROWTH_RATIO, 'white');
+              white.r = Math.min(white.r, getMaxRadius('white'));
+              swallowed.dead = true;
+              wrapPosition(white);
+              continue;
+            }
             bouncePair(a, b, nx, ny);
             wrapPosition(a);
             wrapPosition(b);
@@ -920,20 +939,32 @@
       }
 
       function connectParticles() {
+        particles.forEach(p => { p.connectionCount = 0; });
         for (let i = 0; i < particles.length; i++) for (let j = i+1; j < particles.length; j++) {
-          if (particles[i].kind !== particles[j].kind) continue;
-          const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, dist = Math.sqrt(dx*dx+dy*dy);
-          const connectDist = isCollector(particles[i]) ? CONNECT_DIST * 0.72 : CONNECT_DIST;
+          const a = particles[i];
+          const b = particles[j];
+          if (a.dead || b.dead || a.kind !== b.kind) continue;
+          const { dx, dy } = wrappedDelta(a, b);
+          const dist = Math.sqrt(dx*dx+dy*dy);
+          const connectDist = isCollector(a) ? CONNECT_DIST * 0.72 : CONNECT_DIST;
           if (dist < connectDist) {
-            const rgb = COLORS[particles[i].kind].line;
+            a.connectionCount += 1;
+            b.connectionCount += 1;
+            const rgb = COLORS[a.kind].line;
             ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
             ctx.strokeStyle = `rgba(${rgb},${(1-dist/connectDist)*0.22})`;
             ctx.lineWidth = 0.55;
             ctx.stroke();
           }
         }
+        particles.forEach(p => {
+          if (!p.dead && p.kind !== 'white' && p.connectionCount > CONNECTION_THRESHOLD) {
+            p.kind = 'white';
+            p.r = Math.min(getMaxRadius('white'), Math.max(p.r * 1.12, p.r + 0.6));
+          }
+        });
       }
       function animate() {
         ctx.clearRect(0,0,w,h);
@@ -942,6 +973,8 @@
         particles.forEach(p => p.update());
         resolveCollisions();
         connectParticles();
+        particles = particles.filter(p => !p.dead);
+        syncParticleCount();
         particles.forEach(p => p.draw());
         requestAnimationFrame(animate);
       }
