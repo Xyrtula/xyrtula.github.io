@@ -683,6 +683,7 @@
       let w, h, particles = [], mouse = { x: -999, y: -999 };
       const PARTICLE_COUNTS = { desktop: 420, tablet: 160, phone: 85 };
       const CONNECT_DIST = 128, MOUSE_RADIUS = 160;
+      const GRAVITY = 0.018, GRAVITY_REACH = 260, GRAVITY_SOFTENING = 900, MIN_SPEED = 0.16;
       const COLORS = {
         blue: { fill: 'rgba(58,137,255,0.72)', line: '58,137,255' },
         red: { fill: 'rgba(255,58,58,0.74)', line: '255,58,58' },
@@ -718,6 +719,45 @@
 
       function mass(particle) {
         return particle.r * particle.r;
+      }
+
+      function wrappedDelta(from, to) {
+        let dx = to.x - from.x;
+        let dy = to.y - from.y;
+        if (dx > w / 2) dx -= w;
+        if (dx < -w / 2) dx += w;
+        if (dy > h / 2) dy -= h;
+        if (dy < -h / 2) dy += h;
+        return { dx, dy };
+      }
+
+      function wrapPosition(particle) {
+        if (particle.x < 0) particle.x += w;
+        if (particle.x >= w) particle.x -= w;
+        if (particle.y < 0) particle.y += h;
+        if (particle.y >= h) particle.y -= h;
+      }
+
+      function applyMutualGravity() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i];
+            const b = particles[j];
+            const { dx, dy } = wrappedDelta(a, b);
+            const distSqRaw = dx * dx + dy * dy;
+            const reach = Math.max(GRAVITY_REACH, (a.r + b.r) * 14);
+            if (distSqRaw < 0.01 || distSqRaw > reach * reach) continue;
+            const distSq = distSqRaw + GRAVITY_SOFTENING;
+            const dist = Math.sqrt(distSqRaw);
+            const force = GRAVITY * mass(a) * mass(b) / distSq;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            a.vx += (force / mass(a)) * nx;
+            a.vy += (force / mass(a)) * ny;
+            b.vx -= (force / mass(b)) * nx;
+            b.vy -= (force / mass(b)) * ny;
+          }
+        }
       }
 
       function growRadius(base, addition, ratio, kind) {
@@ -775,26 +815,6 @@
           this.r = Math.random() * 2.4 + 1.8;
         }
         update() {
-          if (!isCollector(this)) {
-            particles.forEach(attractor => {
-              if (!isCollector(attractor) || attractor === this) return;
-              const dx = attractor.x - this.x;
-              const dy = attractor.y - this.y;
-              const distSq = dx * dx + dy * dy;
-              const reach = Math.max(190, attractor.r * 8);
-              if (distSq < 1 || distSq > reach * reach) return;
-              const dist = Math.sqrt(distSq);
-              const force = (1 - dist / reach) * (attractor.r / getMaxRadius(attractor.kind)) * 0.015;
-              this.vx += (dx / dist) * force;
-              this.vy += (dy / dist) * force;
-            });
-          }
-
-          this.x += this.vx; this.y += this.vy;
-          if (this.x < this.r) { this.x = this.r; this.vx = Math.abs(this.vx); }
-          if (this.x > w - this.r) { this.x = w - this.r; this.vx = -Math.abs(this.vx); }
-          if (this.y < this.r) { this.y = this.r; this.vy = Math.abs(this.vy); }
-          if (this.y > h - this.r) { this.y = h - this.r; this.vy = -Math.abs(this.vy); }
           const dx = this.x - mouse.x, dy = this.y - mouse.y, dist = Math.sqrt(dx*dx+dy*dy);
           if (dist < MOUSE_RADIUS) { const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.03; this.vx += dx * force; this.vy += dy * force; }
           this.vx *= 0.992; this.vy *= 0.992;
@@ -804,6 +824,13 @@
             this.vx = (this.vx / speed) * maxSpeed;
             this.vy = (this.vy / speed) * maxSpeed;
           }
+          if (speed < MIN_SPEED) {
+            const angle = Math.random() * Math.PI * 2;
+            this.vx += Math.cos(angle) * MIN_SPEED * 0.45;
+            this.vy += Math.sin(angle) * MIN_SPEED * 0.45;
+          }
+          this.x += this.vx; this.y += this.vy;
+          wrapPosition(this);
         }
         draw() {
           const palette = COLORS[this.kind];
@@ -841,8 +868,8 @@
         syncParticleCount();
         particles.forEach(p => {
           p.r = Math.min(p.r, getMaxRadius(p.kind));
-          if (p.x > w - p.r) p.x = w - p.r;
-          if (p.y > h - p.r) p.y = h - p.r;
+          p.x = ((p.x % w) + w) % w;
+          p.y = ((p.y % h) + h) % h;
         });
       }
 
@@ -924,6 +951,7 @@
       }
       function animate() {
         ctx.clearRect(0,0,w,h);
+        applyMutualGravity();
         particles.forEach(p => p.update());
         resolveCollisions();
         connectParticles();
