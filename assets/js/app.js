@@ -682,7 +682,7 @@
       const ctx = canvas.getContext('2d');
       let w, h, particles = [], mouse = { x: -999, y: -999 };
       const PARTICLE_COUNTS = { desktop: 420, tablet: 160, phone: 85 };
-      const CONNECT_DIST = 128, MOUSE_RADIUS = 160;
+      const CONNECT_DIST = 20, MOUSE_RADIUS = 160;
       const GRAVITY = 0.018, GRAVITY_REACH = 260, GRAVITY_SOFTENING = 900, MIN_SPEED = 0.16;
       const CONNECTION_THRESHOLD = 5, SWALLOW_GROWTH_RATIO = 0.42;
       const COLORS = {
