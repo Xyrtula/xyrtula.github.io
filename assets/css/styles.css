@@ -269,13 +269,13 @@
             box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
             z-index: 1;  
             transition: transform 0.28s var(--ease-bounce), box-shadow 0.28s var(--ease-smooth), background 0.28s var(--ease-smooth);
-            margin-top: 20px;
         }
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 0 6px rgba(255,255,255,0.04), 0 0 18px rgba(255,255,255,0.14); }
             50% { box-shadow: 0 0 0 10px rgba(255,255,255,0.06), 0 0 24px rgba(255,255,255,0.22); }
         }
-        .journey-item.education .journey-node { background: #7eacf0; }
+        .journey-item.education .journey-node { background: #7eacf0; 
+                                              margin-top: 20px;}
         .journey-item.experience .journey-node { background: var(--accent); }
         .journey-card {
             --journey-shift: 0px;
