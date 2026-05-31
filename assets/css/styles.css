@@ -237,7 +237,6 @@
         .journey-item.education .journey-card {
             grid-column: 1;
             --journey-shift: -18px;
-                justify-self: end;
         }
         .journey-item.experience .journey-card {
             grid-column: 3;
