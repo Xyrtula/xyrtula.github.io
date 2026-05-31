@@ -241,6 +241,7 @@
         }
         .journey-item.experience .journey-card {
             grid-column: 3;
+                margin-top: 30px;
             --journey-shift: 18px;
         }
         .journey-date {
