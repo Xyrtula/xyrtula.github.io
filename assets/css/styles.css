@@ -995,7 +995,7 @@
             z-index: 3;
         }
         .play-zone-header .section-heading {
-            margin-bottom: 0;
+            margin-bottom: 0.5rem;
             border-color: rgba(32,213,216,0.26);
             box-shadow: 0 14px 34px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.025);
         }
