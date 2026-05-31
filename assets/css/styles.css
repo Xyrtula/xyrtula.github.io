@@ -281,6 +281,7 @@
             --journey-shift: 0px;
             width: 100%;
             max-width: 360px;
+            min-height: 180px
             position: relative;
             appearance: none;
             font: inherit;
