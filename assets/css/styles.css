@@ -92,10 +92,10 @@
             text-align: left;
             padding: clamp(1.25rem, 2.4vw, 2.1rem);
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.09);
-            background: linear-gradient(180deg, rgba(18,18,26,0.58), rgba(18,18,26,0.34));
-            backdrop-filter: blur(14px);
-            box-shadow: 0 20px 54px rgba(0,0,0,0.22);
+            border: none;
+            background: transparent;
+            backdrop-filter: none;
+            box-shadow: none;
         }
         .hero-name { font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 600; letter-spacing: 0.08em; color: var(--text-primary); line-height: 1.15; white-space: nowrap; opacity: 0; transform: translateY(20px); animation: fadeUp 0.7s var(--ease-smooth) 0.3s forwards; }
         .hero-name span { color: var(--text-primary); }
