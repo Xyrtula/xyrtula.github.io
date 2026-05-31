@@ -1307,7 +1307,9 @@
             .journey-tree {
                 width: 100%;
                 min-height: 680px;
-                margin: 0 auto;
+                display: grid;
+                justify-content: center;
+                align-content: center;
             }
             .journey-item {
                 grid-template-columns: minmax(0, 312px) 88px minmax(0, 312px);
