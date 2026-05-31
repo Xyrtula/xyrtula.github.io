@@ -233,8 +233,6 @@
             gap: 1rem;
             min-height: 134px;
             margin: 0.5rem 0;
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
         }
         .journey-item.education .journey-card {
             grid-column: 1;
@@ -282,7 +280,7 @@
         .journey-card {
             --journey-shift: 0px;
             width: 100%;
-            max-width: 312px;
+            max-width: 360px;
             position: relative;
             appearance: none;
             font: inherit;
