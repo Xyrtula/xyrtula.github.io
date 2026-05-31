@@ -237,6 +237,7 @@
         .journey-item.education .journey-card {
             grid-column: 1;
             --journey-shift: -18px;
+                justify-self: end;
         }
         .journey-item.experience .journey-card {
             grid-column: 3;
@@ -275,8 +276,6 @@
             50% { box-shadow: 0 0 0 10px rgba(255,255,255,0.06), 0 0 24px rgba(255,255,255,0.22); }
         }
         .journey-item.education .journey-node { background: #7eacf0; 
-                                                    position: relative;
-                                                    top: 100px;
         }
         .journey-item.experience .journey-node { background: var(--accent); }
         .journey-card {
