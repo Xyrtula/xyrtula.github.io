@@ -270,6 +270,7 @@
             box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
             z-index: 1;  
             transition: transform 0.28s var(--ease-bounce), box-shadow 0.28s var(--ease-smooth), background 0.28s var(--ease-smooth);
+            transform: translateY(35px);
         }
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 0 6px rgba(255,255,255,0.04), 0 0 18px rgba(255,255,255,0.14); }
@@ -282,7 +283,7 @@
             --journey-shift: 0px;
             width: 100%;
             max-width: 360px;
-            min-height: 180px
+            min-height: 300px
             position: relative;
             appearance: none;
             font: inherit;
