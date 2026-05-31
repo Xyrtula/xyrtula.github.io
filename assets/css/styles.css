@@ -229,10 +229,11 @@
             position: relative;
             display: grid;
             grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
-            align-items: center;
+            align-items: start; 
             gap: 1rem;
             min-height: 134px;
-            margin: 0.5rem 0;
+            min-width: 0;
+            margin: 1.5rem 0;
         }
         .journey-item.education .journey-card {
             grid-column: 1;
