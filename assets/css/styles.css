@@ -276,7 +276,7 @@
         }
         .journey-item.education .journey-node { background: #7eacf0; 
                                                     position: relative;
-                                                    top: 30px;
+                                                    top: 100px;
         }
         .journey-item.experience .journey-node { background: var(--accent); }
         .journey-card {
