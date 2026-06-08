@@ -291,7 +291,7 @@
             --journey-shift: 0px;
             width: 100%;
             max-width: 360px;
-            min-height: 300px
+            min-height: 300px;
             position: relative;
             appearance: none;
             font: inherit;
@@ -303,7 +303,7 @@
             cursor: pointer;
             overflow: hidden;
             transform: translateX(var(--journey-shift));
-            transition: transform 0.28s var(--ease-smooth), border-color 0.28s var(--ease-smooth), box-shadow 0.28s var(--ease-smooth), background 0.28s var(--ease-smooth);
+            transition: transform 0.28s var(--ease-smooth), border-color 0.28s var(--ease-smooth), box-shadow 0.28s var(--ease-smooth), background 0.28s var(--ease-smooth); 
         }
         .journey-card::before {
             content: '';
