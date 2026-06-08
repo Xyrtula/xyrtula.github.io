@@ -1439,14 +1439,15 @@
             .journey-axis { left: 1rem; transform: none; }
             .journey-item {
                 grid-template-columns: 24px 1fr;
-                gap: 1rem;
-                min-height: 100px;
+                gap: 0.85rem;
+                min-height: auto;
                 margin: 1rem 0;
+                align-items: start;
             }
             .journey-date {
-                left: 2.2rem;
+                left: 2rem;
                 transform: none;
-                top: -0.7rem;
+                top: 0;
             }
             .journey-node { grid-column: 1; }
             .journey-card,
@@ -1455,6 +1456,9 @@
                 grid-column: 2;
                 max-width: none;
                 --journey-shift: 0px;
+                margin-top: 0;
+                min-height: auto;
+                padding: 0.9rem 1rem 1.2rem;
             }
             .programs-grid,
             .skills-board,
