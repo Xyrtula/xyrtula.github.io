@@ -1,7 +1,7 @@
-    const RESPONSIVE_BREAKPOINT = 1760;
-    const RESPONSIVE_HEIGHT_BREAKPOINT = 900;
-    let isMobile = window.innerWidth <= RESPONSIVE_BREAKPOINT || window.innerHeight <= RESPONSIVE_HEIGHT_BREAKPOINT;
-    document.body.classList.toggle('mobile-mode', isMobile);
+    const RESPONSIVE_BREAKPOINT = Infinity;
+    const RESPONSIVE_HEIGHT_BREAKPOINT = Infinity;
+    let isMobile = true;
+    document.body.classList.add('mobile-mode');
 
     // DATA
     const WORK_PROJECTS = [
@@ -397,7 +397,7 @@
     const sectionCount = sections.length;
 
     function shouldUseResponsiveFlow() {
-      return window.innerWidth <= RESPONSIVE_BREAKPOINT || window.innerHeight <= RESPONSIVE_HEIGHT_BREAKPOINT;
+      return true;
     }
 
     function setActiveSection(idx) {
