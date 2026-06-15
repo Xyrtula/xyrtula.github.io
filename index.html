@@ -65,7 +65,15 @@
 
         .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 3rem; transition: background 0.4s var(--ease-smooth), padding 0.3s, box-shadow 0.3s; }
         .navbar.scrolled { background: rgba(37,37,48,0.96); backdrop-filter: blur(12px); padding: 0.8rem 3rem; box-shadow: 0 1px 20px rgba(0,0,0,0.3); }
-        .nav-logo { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--text-primary); letter-spacing: 0.08em; }
+        .nav-logo { display: flex; align-items: center; }
+        .nav-logo img {
+            display: block;
+            height: 38px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+        }
         .nav-logo span { color: var(--accent); }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a { font-size: 0.85rem; font-weight: 400; color: var(--text-secondary); letter-spacing: 0.05em; text-transform: uppercase; position: relative; padding-bottom: 4px; transition: color 0.3s; }
@@ -1602,7 +1610,9 @@
     <div class="noise-overlay"></div>
 
     <nav class="navbar" id="navbar" aria-label="Main navigation">
-        <div class="nav-logo">Xyrtula</div>
+        <a class="nav-logo" href="#hero" aria-label="Xyrtula home">
+            <img src="assets/Xyrtula_Logo.png" alt="Xyrtula logo">
+        </a>
         <ul class="nav-links" id="navLinks">
             <li><a href="#hero" data-section="0" class="active">Home</a></li>
             <li><a href="#about" data-section="1">About</a></li>
